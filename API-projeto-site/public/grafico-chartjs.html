@@ -13,7 +13,7 @@
 
     <!-- scripts do Chart.js -->
     <script type="text/javascript" src="https://www.chartjs.org/dist/2.8.0/Chart.min.js"></script>
-    <script type="text/javascript" src="https://www.chartjs.org/samples/latest/utils.js"></script>
+    <!-- <script type="text/javascript" src="https://www.chartjs.org/samples/latest/utils.js"></script> -->
     <script type="text/javascript" src="funcoes.js"></script>
 
     <style>
@@ -33,7 +33,7 @@
     </style>
 </head>
 
-<body>
+<body onload=obterDadosGraficoPrimeiraVez>
     <!--header inicio-->
 
     <div class="header">
@@ -76,6 +76,7 @@
     window.onload = obterDadosGraficoPrimeiraVez(1);
 
     function alterarCoresBotoes(idcaminhao) {
+        console.log("executei alterarCoresBotoes")
         botaoCaminhao1.className = "btn"
         botaoCaminhao2.className = "btn"
         botaoCaminhao3.className = "btn"
@@ -94,7 +95,7 @@
 
 
     function chamargraficos(idcaminhao) {
-
+        console.log("executei chamargraficos")
         obterDadosGraficoPrimeiraVez(idcaminhao)
         //atualizarGrafico(idcaminhao)
 
@@ -112,6 +113,7 @@
     // altere aqui as configurações do gráfico
     // (tamanhos, cores, textos, etc)
     function configurarGrafico() {
+        console.log("executei configurarGrafico")
         var configuracoes = {
             responsive: true,
             animation: { duration: 500 },
@@ -147,7 +149,7 @@
     // altere aqui como os dados serão exibidos
     // e como são recuperados do BackEnd
     function obterDadosGraficoPrimeiraVez(idcaminhao) {
-
+        console.log("executei obterDadosGraficoPrimeiraVez")
         alterarCoresBotoes(idcaminhao);
 
         if (proximaAtualizacao != undefined) {
@@ -166,16 +168,16 @@
                             {
                                 yAxisID: 'y-temperatura',
                                 label: 'Temperatura',
-                                borderColor: window.chartColors.red,
-                                backgroundColor: window.chartColors.red,
+                                borderColor: 'rgba(255,0,0,1)',
+                                backgroundColor: 'rgba(255,0,0,1)',
                                 fill: false,
                                 data: []
                             },
                             {
                                 yAxisID: 'y-umidade',
                                 label: 'Umidade',
-                                borderColor: window.chartColors.blue,
-                                backgroundColor: window.chartColors.blue,
+                                borderColor: 'rgba(255,0,255,1)',
+                                backgroundColor: 'rgba(255,0,255,1)',
                                 fill: false,
                                 data: []
                             }
@@ -207,7 +209,7 @@
     // só mexer se quiser alterar o tempo de atualização
     // ou se souber o que está fazendo!
     function atualizarGrafico(idcaminhao, dados) {
-
+        console.log("executei atualizarGrafico")
         fetch(`/leituras/tempo-real/${idcaminhao}`, { cache: 'no-store' }).then(function (response) {
             console.log("Estou tentando pegar idcaminhao = ", idcaminhao)
             if (response.ok) {
@@ -244,6 +246,7 @@
 
     // só altere aqui se souber o que está fazendo!
     function plotarGrafico(dados, idcaminhao) {
+        console.log("executei plotarGrafico")
         console.log('iniciando plotagem do gráfico...');
 
         var ctx = canvas_grafico.getContext('2d');
