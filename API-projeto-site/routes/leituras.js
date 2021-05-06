@@ -22,7 +22,7 @@ router.get('/ultimas/:idcaminhao', function(req, res, next) {
 		temperatura, 
 		umidade, 
 		momento,
-		FORMAT(momento,'HH:mm:ss') as momento_grafico
+		DATE_FORMAT(momento,'%H:%i:%s') as momento_grafico
 		from leitura
 		where fkcaminhao = ${idcaminhao}
 		order by id desc limit ${limite_linhas}`;
@@ -64,7 +64,7 @@ router.get('/tempo-real/:idcaminhao', function(req, res, next) {
 	
 	if (env == 'dev') {
 		// abaixo, escreva o select de dados para o Workbench
-		instrucaoSql = `select temperatura, umidade, FORMAT(momento,'HH:mm:ss') as momento_grafico, fkcaminhao from leitura where fkcaminhao = ${idcaminhao} order by id desc limit 1`;
+		instrucaoSql = `select temperatura, umidade, DATE_FORMAT(momento,'%H:%i:%s') as momento_grafico, fkcaminhao from leitura where fkcaminhao = ${idcaminhao} order by id desc limit 1`;
 	} else if (env == 'production') {
 		// abaixo, escreva o select de dados para o SQL Server
 		instrucaoSql = `select top 1 temperatura, umidade, FORMAT(momento,'HH:mm:ss') as momento_grafico, fkcaminhao from leitura where fkcaminhao = ${idcaminhao} order by id desc`;
