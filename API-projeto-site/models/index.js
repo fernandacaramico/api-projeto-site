@@ -8,7 +8,7 @@ var env       = process.env.NODE_ENV || 'development';
 var config    = require(__dirname + '/../config/config.js')[env];
 var db        = {};
 
-console.warn(`\n===> env: ${env}\n`);
+console.warn(`\n===> você está no ambiente: ${env}\n \tSe dev, usando Workbench local\n\tSe production, usando nuvem Azure`);
 
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable], config);

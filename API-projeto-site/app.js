@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'production'; // altere para 'production' ou 'dev'
 
 var express = require('express');
 var path = require('path');
@@ -11,7 +11,7 @@ var leiturasRouter = require('./routes/leituras');
 
 var app = express();
 
-app.use(logger('dev'));
+app.use(logger('production'));  // altere para 'production' ou 'dev'
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
