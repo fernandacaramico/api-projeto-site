@@ -1,25 +1,36 @@
-*Parte 1*
-Editar o arquivo config/config.js e colocar as configurações de acesso ao seu banco de dados.
-Edite SOMENTE as configurações:
-username, password, database, host
+1. Entre em /routes e altere o select em 'leituras.js' para que você consiga
+inserir os dados em sua tabela.
 
+2. Entre na pasta /config e altere as credenciais de banco de dados em 'config.js', 
+tanto local (workbench) quanto remoto (azure)
 
-*Parte 2*
-0. abra o git bash nesta pasta
+3. Abra o arquivo app.js e altere na linha 1 o nome do seu ambiente
 
-1. executar "npm i" e aguardar uns instantes, pois fará uns downloads
+4. Após fazer os passos anteriores, abra um git bash nesta pasta 
 
-2. executar "npm i -g nodemon". Caso de certo, vá para o passo #3. Caso dê errado, vá pra o passo #4
+5. Execute um "npm i" e aguarde
 
-3. (caso o passo #2 tenha dado certo) executar "nodemon --exec npm start"
+6. Execute "npm i -g nodemon". 
 
-4. (caso o passo #2 tenha dado errado) executar "npm start"
+Caso dê certo, vá para o passo #7.1.
+Caso dê errado, vá pra o passo #7.2.
 
-5. p/ testar acesse este endereço no navegador:  localhost:3000 ou localhost:3000/index.html
+7.1. (caso o passo #6 tenha dado certo) Execute "nodemon --exec npm start" (vá para passo 8)
+
+7.2. (caso o passo #6 tenha dado errado) Execute "npm start" (vá para passo 8)
+
+>>> Atenção ao ambiente que aparecerá no terminal! Production ou dev. <<<
+
+8. Para testar acesse este endereço no navegador: localhost:3000 ou localhost:3000/index.html
    Deve aparecer a página inicial do projeto, o index
    
-6. sempre que fizer uma alteração (ex: na consulta de login ou de dados de tempo real)...
-   6.1. CASO o passo #2 tenha dado certo: Apenas aguarde alguns segundos para testar novamente
-   6.2. CASO o passo #2 NÃO tenha dado certo: Volte para o git bash que está em execução e tecle CTRL+C. Apenas execute o comando do passo #4 novamente
+9. Sempre que fizer uma alteração (ex: na consulta de login ou de dados de tempo real)...
+   9.1. CASO o passo #6 tenha dado certo: 
+   Apenas aguarde alguns segundos para testar novamente
+
+   9.2. CASO o passo #6 não tenha dado certo: 
+   Volte para o git bash que está em execução e tecle CTRL+C (parando o processo) 
+   Execute o comando do passo #7.2 novamente (iniciando o processo)
    
-OBS: As vezes a atualização automática prometida no item #6.1 simplesmente não ocorre. Nesse caso, Volte para o git bash que está em execução e tecle CTRL+C. Apenas execute o comando do passo #3 novamente
+OBS: Às vezes a atualização automática prometida no item #6.1 simplesmente não ocorre...
+Nesse caso, faça novamente o passo 9.2.
