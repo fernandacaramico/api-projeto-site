@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto IoT - Tempo Real</title>
+    <link rel="stylesheet" href="css/dashboards.css">
+
+    <!-- script do google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="funcoes.js"></script>
+
+    <style>
+        /* Classes CSS para exemplos de alertas */
+
+        .normal {
+            background-color: white;
+        }
+
+        .alerta-alto {
+            color: tomato;
+            
+        }
+
+        .alerta-baixo {
+            color: rgb(38, 0, 255);
+            
+        }
+    </style>
+</head>
+
+<body onload="atualizacaoPeriodica()">
+    <!--header inicio-->
+
+    <div class="header">
+        <div class="container">
+            <h1 class="titulo"><span class="highlight">Projeto</span> IoT Revolucionário</h1>
+            <div class="usuario">
+                <h3>Olá, <b id="b_usuario"></b></h3>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="grafico-chartjs.html">Gráfico de histórico recente</a></li>
+                    <li><a href="#" class="highlight" onclick="logoff()">LOGOUT</a></li>
+                    <li><a href="pagina-estatica-chartsjs.html">
+                        <i class="show-on-hover">IR PARA PÁGINA GRÁFICO ESTÁTICO</i>
+                    </a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--header fim-->
+
+    <div class="dashboard">
+        <div class="container">
+
+
+
+            <div class="caminhao">
+                <h4>Caminhão <span name="namecaminhao" id="idcaminhao" value="1">1</span></h4>
+                <div class="valores">
+                    <div class="valor" id="div_temperatura">Temperatura sendo obtida...</div>
+                    <div class="valor" id="div_umidade">Umidade sendo obtida...</div>
+                </div>
+                <div class="alertas">
+                    <div class="alerta" id="div_alerta_temperatura"> </div>
+                    <div class="alerta_umidd" id="div_alerta_umidade"></div>
+                </div>
+            </div>
+
+            <div class="caminhao">
+                <h4>Caminhão <span name="namecaminhao" id="idcaminhao" value="2">2</span></h4>
+                <div class="valores">
+                    <div class="valor" id="div_temperatura2">Temperatura sendo obtida...</div>
+                    <div class="valor" id="div_umidade2">Umidade sendo obtida...</div>
+                </div>
+
+                <div class="alertas">
+                    <div class="alerta" id="div_alerta_temperatura2"></div>
+                    <div class="alerta_umidd" id="div_alerta_umidade2"></div>
+                </div>
+            </div>
+
+            <div class="caminhao">
+                <h4>Caminhão <span name="namecaminhao" id="idcaminhao" value="3">3</span></h4>
+                <div class="valores">
+                    <div class="valor" id="div_temperatura3">Temperatura sendo obtida...</div>
+                    <div class="valor" id="div_umidade3">Umidade sendo obtida...</div>
+                </div>
+                <div class="alertas">
+                    <div class="alerta" id="div_alerta_temperatura3"></div>
+                    <div class="alerta_umidd" id="div_alerta_umidade3"></div>
+                </div>
+            </div>
+
+            <div class="caminhao">
+                <h4>Caminhão <span name="namecaminhao" id="idcaminhao" value="4">4</span></h4>
+                <div class="valores">
+                    <div class="valor" id="div_temperatura4">Temperatura sendo obtida...</div>
+                    <div class="valor" id="div_umidade4">Umidade sendo obtida...</div>
+                </div>
+
+                <div class="alertas">
+                    <div class="alerta" id="div_alerta_temperatura4"></div>
+                    <div class="alerta_umidd" id="div_alerta_umidade4"></div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+</body>
+
+
+<script>
+
+    let usuario;
+
+    verificar_autenticacao();
+
+    // só mexer se quiser alterar o tempo de atualização
+    // ou se souber o que está fazendo!
+    function atualizacaoPeriodica() {
+        obterdadosporcaminhao(1);
+        obterdadosporcaminhao(2);
+        obterdadosporcaminhao(3);
+        obterdadosporcaminhao(4);
+        setTimeout(atualizacaoPeriodica, 5000);
+    }
+
+    
+
+    function obterdadosporcaminhao(idcaminhao) {
+        //aguardar();
+        fetch(`/leituras/tempo-real/${idcaminhao}`)
+        .then(resposta => {
+
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+
+                    // aqui, após registro. use os nomes 
+                    // dos atributos que vem no JSON 
+                    var dados = {
+                        temperatura: resposta.temperatura,
+                        umidade: resposta.umidade
+                    }
+
+                    alertar(resposta.temperatura, resposta.umidade, idcaminhao);
+                    atualizarTela(dados, idcaminhao);
+                });
+            } else {
+
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+        .catch(function (error) {
+                console.error(`Erro na obtenção dos dados do caminhao p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function alertar(temperatura, umidade, idcaminhao) {
+        // padrão para meu alerta
+        var limites = {
+            max_temperatura: 40,
+            min_temperatura: 20,
+            max_umidade: 80,
+            min_umidade: 50,
+        };
+
+        // zerar aviso de mensagem
+        var mensagem_temperatura = '';
+        var mensagem_umidade = '';
+        var classe_temperatura = 'alerta';
+        var classe_umidade = 'alerta_umidd';
+
+        // comparando
+        if (temperatura > limites.max_temperatura) {
+            mensagem_temperatura += 'Temperatura alta demais! <br>';
+            classe_temperatura = 'alerta alerta-alto';
+        }
+        if (umidade > limites.max_umidade) {
+            mensagem_umidade += 'Umidade alta demais! <br>';
+            classe_umidade = 'alerta_umidd alerta-alto';
+        }
+        if (temperatura < limites.min_temperatura) {
+            mensagem_temperatura = 'Temperatura baixa demais! <br>';
+            classe_temperatura = 'alerta alerta-baixo';
+        }
+        if (umidade < limites.min_umidade) {
+            mensagem_umidade = 'Umidade baixa demais! <br>';
+            classe_umidade = 'alerta_umidd alerta-baixo';
+        }
+
+        // escolhendo qual alterar
+        var div_temperatura_alterar
+        var div_umidade_alterar
+
+        if (idcaminhao == 1) {
+            div_temperatura_alterar = div_alerta_temperatura
+            div_umidade_alterar = div_alerta_umidade
+        } else if (idcaminhao == 2) {
+            div_temperatura_alterar = div_alerta_temperatura2
+            div_umidade_alterar = div_alerta_umidade2
+        } else if (idcaminhao == 3) {
+            div_temperatura_alterar = div_alerta_temperatura3
+            div_umidade_alterar = div_alerta_umidade3
+        } else if (idcaminhao == 4) {
+            div_temperatura_alterar = div_alerta_temperatura4
+            div_umidade_alterar = div_alerta_umidade4
+        }
+
+        // alterando
+        div_temperatura_alterar.innerHTML = mensagem_temperatura;
+        div_temperatura_alterar.className = classe_temperatura;
+
+        div_umidade_alterar.innerHTML = mensagem_umidade;
+        div_umidade_alterar.className = classe_umidade;
+    }
+
+    // só altere aqui se souber o que está fazendo!
+    function atualizarTela(dados, idcaminhao) {
+        console.log('iniciando atualização da tela...');
+
+        // escolhendo qual alterar
+        var div_temperatura_alterar
+        var div_umidade_alterar
+
+        if (idcaminhao == 1) {
+            div_temperatura_alterar = div_temperatura
+            div_umidade_alterar = div_umidade
+        } else if (idcaminhao == 2) {
+            div_temperatura_alterar = div_temperatura2
+            div_umidade_alterar = div_umidade2
+        } else if (idcaminhao == 3) {
+            div_temperatura_alterar = div_temperatura3
+            div_umidade_alterar = div_umidade3
+        } else if (idcaminhao == 4) {
+            div_temperatura_alterar = div_temperatura4
+            div_umidade_alterar = div_umidade4
+        }
+
+        div_temperatura_alterar.innerHTML = `Temperatura: ${dados.temperatura}º`;
+
+        div_umidade_alterar.innerHTML = `Umidade: ${dados.umidade}%`;
+
+        
+
+    }
+
+
+    function sendData() {
+        var http = new XMLHttpRequest();
+        http.open('GET', 'http://localhost:9000/api/sendData', false);
+        http.send(null);
+    }
+
+    setInterval(() => {
+        sendData();
+    }, 5000);
+
+</script>

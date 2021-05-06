@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto IoT - Gráficos</title>
+    <link rel="stylesheet" href="css/dashboards.css">
+
+    <!-- script do google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="funcoes.js"></script>
+
+    <!-- scripts do Chart.js -->
+    <script type="text/javascript" src="https://www.chartjs.org/dist/2.8.0/Chart.min.js"></script>
+    <script type="text/javascript" src="https://www.chartjs.org/samples/latest/utils.js"></script>
+    <script type="text/javascript" src="funcoes.js"></script>
+
+    <style>
+        /* Classes CSS para exemplos de alertas */
+
+        .normal {
+            background-color: white;
+        }
+
+        .alerta-alto {
+            background-color: tomato;
+        }
+
+        .alerta-baixo {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <!--header inicio-->
+
+    <div class="header">
+        <div class="container">
+            <h1 class="titulo"><span class="highlight">Projeto</span> IoT Revolucionário</h1>
+            <div class="usuario">
+                <h3>Olá, <b id="b_usuario"></b></h3>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li> <a href="tempo-real.html">Tempo Real</a></li>
+                    <li><a href="#" class="highlight" onclick="logoff()">LOGOUT</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--header fim-->
+
+    <div class="dashboard">
+        <div class="botoes">
+            <button class="btn" id="botaoCaminhao1" onclick="plotarGrafico(0)">Caminhão 1</button>
+            <button class="btn" id="botaoCaminhao2" onclick="plotarGrafico(1)">Caminhão 2</button>
+            <button class="btn" id="botaoCaminhao3" onclick="plotarGrafico(2)">Caminhão 3</button>
+            <button class="btn" id="botaoCaminhao4" onclick="plotarGrafico(3)">Caminhão 4</button>
+        </div>
+        <div id="grafico" style="width:75%; margin: auto">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+</body>
+
+
+</html>
+<script>
+
+    // Já foi passado quando compartilhamos a API de Login/Cadastro
+    verificar_autenticacao();
+
+    // Esta parte é nova
+    var infosCaminhoes = [
+        [3, 18, 7, 2, 3, 2],
+        [11, 10, 9, 6, 1, 4],
+        [9, 17, 4, 15, 5, 8],
+        [8, 5, 9, 7, 19, 9]
+    ]
+
+    var caminhaoNow;
+    
+    // mostra o gráfico do primeiro caminhao assim que a página carregar
+    plotarGrafico(0);
+    
+    // declara função que cria gráfico
+    function plotarGrafico(idCaminhao) {
+        //limpa o gráfico primeiro
+        grafico.innerHTML = "<canvas id=\"myChart\"></canvas>";
+        
+        // indica o caminhao selecionado
+        caminhaoNow = idCaminhao;
+        
+        // inicia a criação do gráfico
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Dado 1', 'Dado 2', 'Dado 3', 'Dado 4', 'Dado 5', 'Dado 6'],
+                datasets: [{
+                    label: 'Temperatura em °C',
+                    // aqui insere informações do JSON no gráfico
+                    data: infosCaminhoes[idCaminhao],
+                    backgroundColor: [
+                        'rgba(255, 69, 0, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 69, 0)',
+                        'rgba(255, 69, 0)',
+                        'rgba(255, 69, 0)',
+                        'rgba(255, 69, 0)',
+                        'rgba(255, 69, 0)',
+                        'rgba(255, 69, 0)'
+                    ],
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 69, 0)'    
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            max: 25,
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+        
+        alterarCoresBotoes(idCaminhao);
+
+    }
+
+    function alterarCoresBotoes(idcaminhao) {
+        botaoCaminhao1.className = "btn"
+        botaoCaminhao2.className = "btn"
+        botaoCaminhao3.className = "btn"
+        botaoCaminhao4.className = "btn"
+
+        if (idcaminhao == "0") {
+            botaoCaminhao1.className += " btn-now"
+        } else if (idcaminhao == "1") {
+            botaoCaminhao2.className += " btn-now"
+        } else if (idcaminhao == "2") {
+            botaoCaminhao3.className += " btn-now"
+        } else if (idcaminhao == "3") {
+            botaoCaminhao4.className += " btn-now"
+        }
+    }    
+
+</script>

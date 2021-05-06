@@ -1,0 +1,25 @@
+*Parte 1*
+Editar o arquivo config/config.js e colocar as configurações de acesso ao seu banco de dados.
+Edite SOMENTE as configurações:
+username, password, database, host
+
+
+*Parte 2*
+0. abra o git bash nesta pasta
+
+1. executar "npm i" e aguardar uns instantes, pois fará uns downloads
+
+2. executar "npm i -g nodemon". Caso de certo, vá para o passo #3. Caso dê errado, vá pra o passo #4
+
+3. (caso o passo #2 tenha dado certo) executar "nodemon --exec npm start"
+
+4. (caso o passo #2 tenha dado errado) executar "npm start"
+
+5. p/ testar acesse este endereço no navegador:  localhost:3000 ou localhost:3000/index.html
+   Deve aparecer a página inicial do projeto, o index
+   
+6. sempre que fizer uma alteração (ex: na consulta de login ou de dados de tempo real)...
+   6.1. CASO o passo #2 tenha dado certo: Apenas aguarde alguns segundos para testar novamente
+   6.2. CASO o passo #2 NÃO tenha dado certo: Volte para o git bash que está em execução e tecle CTRL+C. Apenas execute o comando do passo #4 novamente
+   
+OBS: As vezes a atualização automática prometida no item #6.1 simplesmente não ocorre. Nesse caso, Volte para o git bash que está em execução e tecle CTRL+C. Apenas execute o comando do passo #3 novamente

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto IoT - Gráficos</title>
+    <link rel="stylesheet" href="css/dashboards.css">
+
+    <!-- script do google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="funcoes.js"></script>
+
+    <!-- scripts do Chart.js -->
+    <script type="text/javascript" src="https://www.chartjs.org/dist/2.8.0/Chart.min.js"></script>
+    <script type="text/javascript" src="https://www.chartjs.org/samples/latest/utils.js"></script>
+    <script type="text/javascript" src="funcoes.js"></script>
+
+    <style>
+        /* Classes CSS para exemplos de alertas */
+
+        .normal {
+            background-color: white;
+        }
+
+        .alerta-alto {
+            background-color: tomato;
+        }
+
+        .alerta-baixo {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <!--header inicio-->
+
+    <div class="header">
+        <div class="container">
+            <h1 class="titulo"><span class="highlight">Projeto</span> IoT Revolucionário</h1>
+            <div class="usuario">
+                <h3>Olá, <b id="b_usuario"></b></h3>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li> <a href="tempo-real.html">Tempo Real</a></li>
+                    <li><a href="#" class="highlight" onclick="logoff()">LOGOUT</a></li>
+                    <li><a href="pagina-estatica-chartsjs.html">
+                        <i class="show-on-hover">IR PARA PÁGINA GRÁFICO ESTÁTICO</i>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--header fim-->
+
+    <div class="dashboard">
+        <button id="botaoCaminhao1" class="btn" onclick="chamargraficos(1)">Caminhão 1</button>
+        <button id="botaoCaminhao2" class="btn" onclick="chamargraficos(2)">Caminhão 2</button>
+        <button id="botaoCaminhao3" class="btn" onclick="chamargraficos(3)">Caminhão 3</button>
+        <button id="botaoCaminhao4" class="btn" onclick="chamargraficos(4)">Caminhão 4</button>
+        <div style="width:75%; margin: auto">
+            <div id="div_aguarde">Dados sendo obtidos...</div>
+            <canvas id="canvas_grafico"></canvas>
+        </div>
+    </div>
+</body>
+
+
+</html>
+<script>
+
+    let proximaAtualizacao;
+
+    window.onload = obterDadosGraficoPrimeiraVez(1);
+
+    function alterarCoresBotoes(idcaminhao) {
+        botaoCaminhao1.className = "btn"
+        botaoCaminhao2.className = "btn"
+        botaoCaminhao3.className = "btn"
+        botaoCaminhao4.className = "btn"
+
+        if (idcaminhao == "1") {
+            botaoCaminhao1.className += " btn-now"
+        } else if (idcaminhao == "2") {
+            botaoCaminhao2.className += " btn-now"
+        } else if (idcaminhao == "3") {
+            botaoCaminhao3.className += " btn-now"
+        } else if (idcaminhao == "4") {
+            botaoCaminhao4.className += " btn-now"
+        }
+    }
+
+
+    function chamargraficos(idcaminhao) {
+
+        obterDadosGraficoPrimeiraVez(idcaminhao)
+        //atualizarGrafico(idcaminhao)
+
+        alterarCoresBotoes(idcaminhao);
+
+    }
+
+    verificar_autenticacao();
+
+    // neste JSON tem que ser 'labels', 'datasets' etc, 
+    // porque é o padrão do Chart.js
+
+
+
+    // altere aqui as configurações do gráfico
+    // (tamanhos, cores, textos, etc)
+    function configurarGrafico() {
+        var configuracoes = {
+            responsive: true,
+            animation: { duration: 500 },
+            hoverMode: 'index',
+            stacked: false,
+            title: {
+                display: true,
+                text: 'Histórico recente de temperatura e umidade'
+            },
+            scales: {
+                yAxes: [{
+                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                    display: true,
+                    position: 'left',
+                    id: 'y-temperatura',
+                }, {
+                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                    display: true,
+                    position: 'right',
+                    id: 'y-umidade',
+
+                    // grid line settings
+                    gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                }],
+            }
+        };
+
+        return configuracoes;
+    }
+
+    // altere aqui como os dados serão exibidos
+    // e como são recuperados do BackEnd
+    function obterDadosGraficoPrimeiraVez(idcaminhao) {
+
+        alterarCoresBotoes(idcaminhao);
+
+        if (proximaAtualizacao != undefined) {
+            clearTimeout(proximaAtualizacao);
+        }
+
+        fetch(`/leituras/ultimas/${idcaminhao}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    resposta.reverse();
+
+                    var dados = {
+                        labels: [],
+                        datasets: [
+                            {
+                                yAxisID: 'y-temperatura',
+                                label: 'Temperatura',
+                                borderColor: window.chartColors.red,
+                                backgroundColor: window.chartColors.red,
+                                fill: false,
+                                data: []
+                            },
+                            {
+                                yAxisID: 'y-umidade',
+                                label: 'Umidade',
+                                borderColor: window.chartColors.blue,
+                                backgroundColor: window.chartColors.blue,
+                                fill: false,
+                                data: []
+                            }
+                        ]
+                    };
+                    for (i = 0; i < resposta.length; i++) {
+                        var registro = resposta[i];
+                        dados.labels.push(registro.momento_grafico);
+                        dados.datasets[0].data.push(registro.temperatura);
+                        dados.datasets[1].data.push(registro.umidade);
+
+                    }
+                    console.log(JSON.stringify(dados));
+                    div_aguarde.style.display = 'none';
+                    plotarGrafico(dados, idcaminhao);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+
+    }
+
+
+
+    // só mexer se quiser alterar o tempo de atualização
+    // ou se souber o que está fazendo!
+    function atualizarGrafico(idcaminhao, dados) {
+
+        fetch(`/leituras/tempo-real/${idcaminhao}`, { cache: 'no-store' }).then(function (response) {
+            console.log("Estou tentando pegar idcaminhao = ", idcaminhao)
+            if (response.ok) {
+                response.json().then(function (novoRegistro) {
+
+                    console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                    console.log(`Dados atuais do gráfico: ${dados}`);
+
+                    // tirando e colocando valores no gráfico
+                    dados.labels.shift(); // apagar o primeiro
+                    dados.labels.push(novoRegistro.momento_grafico); // incluir um novo momento
+                    dados.datasets[0].data.shift();  // apagar o primeiro de temperatura
+                    dados.datasets[1].data.shift();  // apagar o primeiro de umidade
+                    dados.datasets[0].data.push(novoRegistro.temperatura); // incluir uma nova leitura de temperatura
+                    dados.datasets[1].data.push(novoRegistro.umidade); // incluir uma nova leitura de umidade
+
+                    console.log("meu caminhão é o " + idcaminhao)
+
+                    window.grafico_linha.update();
+
+
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(idcaminhao, dados), 5000);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+                proximaAtualizacao = setTimeout(() => atualizarGrafico(idcaminhao, dados), 5000);
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+
+    }
+
+    // só altere aqui se souber o que está fazendo!
+    function plotarGrafico(dados, idcaminhao) {
+        console.log('iniciando plotagem do gráfico...');
+
+        var ctx = canvas_grafico.getContext('2d');
+        window.grafico_linha = Chart.Line(ctx, {
+            data: dados,
+            options: configurarGrafico()
+        });
+
+        setTimeout(() => atualizarGrafico(idcaminhao, dados), 2000);
+    }
+
+
+    function sendData() {
+        var http = new XMLHttpRequest();
+        http.open('GET', 'http://localhost:9000/api/sendData', false);
+        http.send(null);
+    }
+
+    setInterval(() => {
+        sendData();
+    }, 2000);
+
+</script>

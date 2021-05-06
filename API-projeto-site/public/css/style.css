@@ -1,0 +1,243 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+        /* SÓ COLOCAR QUANDO COLOCAR COR NO HEADER */
+    margin: 0;
+        /* SÓ COLOCAR QUANDO COLOCAR COR NO HEADER */
+        background-color: rgb(255, 95, 37);
+}
+
+.container { 
+    width: 80%;
+    margin: auto;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* CABEÇALHO */
+
+.header {
+    background-color: #232323;
+        /*overflow: auto; /* cuidado*/
+    height: 100px;
+        /*ATENÇÃO VOLTA A NAV AQUI SE SUMIR*/
+    border-bottom: 3px solid orangered;
+}
+
+.header .container {
+    height: 80px;
+}
+
+.header .container .highlight {
+    color: orangered
+}
+
+.header h1 {
+    margin: 0;
+    padding: 0;
+    float: left;
+        /*ATENÇÃO - VAI SUMIR A NAV*/
+    margin-top: 30px;
+    color: white;
+}
+
+.header ul {
+    list-style-type: none;
+        /*ATENÇÃO - NAO É NO NAV*/
+    float: right;
+        /*ATENÇÃO - VAI SUMIR A NAV*/
+    margin-top: 40px;
+}
+
+.header li {
+    float: left;
+        /*ATENÇÃO ORDENE OS ITENS NA MESMA ORDEM QUE ESTÃO NO HTML*/
+    margin-left: 18px;
+        /* FIM*/
+}
+
+.header a {
+    text-transform: uppercase;
+    color: white;
+}
+
+.header a:hover {
+    font-weight: bold;
+}
+
+.header .current {
+    color: orangered;
+    font-weight: bold;
+}
+
+/* JUMBOTRON 
+    aka BANNER */
+
+/*colocar tudo que está acima em header */
+
+.banner {
+    height: 400px;
+    width: 100%;
+    background: url(../img/banner-fundo.jpeg);
+    background-size: cover;
+}
+
+.banner .container {
+    height: 400px;
+}
+
+.banner .texto {
+    color: gray;
+    text-align: center;
+    padding-top: 150px;
+
+}
+
+.banner .titulo {
+    font-size: 48px;
+    color: orangered;
+}
+
+/* NOVIDADES */
+
+.novidades {
+    background-color: #232323;
+    height: 90px;
+}
+
+.novidades .container {
+    padding: 30px 0;
+}
+
+
+.novidades button {
+    color: white;
+    background-color: orangered;
+    text-transform: uppercase;
+    width: 180px;
+    margin: auto;
+    display: block; /* Default de botão é inline-block. Com block, margin auto funciona*/
+    border: 0;
+    height: 38px;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+/* ICONES */
+
+.box {
+    overflow: auto;
+    background-color: #fff ;
+}
+
+.box .box-item {
+    float: left;
+    width: 33%;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.box .box-item img {
+    height: 100px;
+}
+
+/* FOOTER */
+
+.footer {
+    background-color: rgb(255, 95, 37);
+    text-align: center;
+    height: 100px;
+}
+
+.footer h4 {
+    color: white;
+    font-weight: 100;
+    margin: 0;
+    padding-top: 40px;
+}
+
+/* SOBRE - ASSUNTOS */
+
+.assuntos {
+    background-color: rgb(241, 241, 241);
+    overflow: auto;
+    padding-top: 30px;
+    text-align: center;
+    padding-bottom: 50px; /*aqui oh a diferença entre padding e margin*/
+    color: #3d3d3d
+}
+
+.assuntos .assunto {
+    border-bottom: 3px solid orangered;
+    background-color: white;
+    padding: 50px 15px;
+    float: left;
+    width: 40%;
+    margin-left: 5%; 
+}
+
+.assuntos h2 {
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.assuntos p {
+    line-height: 1.5;
+}
+
+/* SOBRE - INTEGRANTES */
+
+.nosso-time {
+    background-color: #232323;
+    text-align: center;
+    overflow: auto;
+} 
+
+.nosso-time h2 {
+    margin: 0;
+    padding-top: 25px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.nosso-time .integrantes {
+    color: white;
+    overflow: auto;
+    margin-top: 30px;
+    padding-bottom: 35px;
+}
+
+
+.nosso-time .integrantes .integrante {
+    /*border: 3px solid cyan;*/
+    width: 18%;
+    float: left;
+    padding: 1%;
+    line-height: 1.5;
+}
+
+.nosso-time .integrante img {
+    height: 100px;
+    background-color: #ff8968;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+/* ASSUNTO GRANDE */
+
+.assuntos .assunto-grande {
+    border-bottom: 3px solid orangered;
+    background-color: white;
+    padding: 50px 30px;
+    float: left;
+    /* width: 450px; */
+    margin-left: 55px; 
+}

@@ -1,0 +1,224 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+        background-color: #ecf0f1;
+}
+
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* CABEÇALHO */
+
+.header {
+    background-color: #232323;
+    border-right: 3px solid orangered;
+    width: 20%;
+    height: 100%;
+    position: fixed;
+}
+
+.header .container .highlight {
+    color: orangered
+}
+
+.usuario {
+    width: 75%;
+    overflow: hidden;
+    margin: auto;
+    text-align: center;
+    color: white;
+}
+
+.usuario h3 {
+    font-weight: 100;
+}
+
+.header h1 {
+    margin: 0;
+    padding: 0;
+    float: left;
+    margin: 35px;
+    color: white;
+    font-size: 25px;
+    padding-bottom: 50px;
+    border-bottom: 2px solid orangered;
+}
+
+.header ul {
+    list-style-type: none;
+    float: left;
+    margin-top: 40px;
+}
+
+.header li {
+    margin: 0 0 30px 0;
+}
+
+.header a {
+    text-transform: uppercase;
+    color: white;
+}
+
+.header a:hover {
+    font-weight: bold;
+}
+
+.header .current {
+    color: orangered;
+    font-weight: bold;
+}
+
+
+/* FOOTER */
+
+.footer {
+    background-color: rgb(255, 95, 37);
+    text-align: center;
+    height: 100px;
+}
+
+.footer h4 {
+    color: white;
+    font-weight: 100;
+    margin: 0;
+    padding-top: 40px;
+}
+
+
+
+/* dashboard */
+
+.dashboard {
+    background-color: #ecf0f1;
+    text-align: center;
+    padding: 50px 0;
+    width: 80%;
+    height: 100%;
+    margin-left: auto;
+}
+
+.dashboard h1 {
+    margin-bottom: 40px;
+}
+
+.dashboard .input-padrao {
+    width: 50%;
+    display: inline-block;
+}
+
+.box-login {
+    display: inline-block;
+    background-color: white;
+    box-shadow:  3px 3px 5px 2px #ccc;
+    padding: 60px 20px 0px 20px;
+    border-radius: 20px;
+    width: 400px;
+}
+
+.dashboard .btn-green {
+    display: block;
+    float: none;
+    margin: auto;
+}
+
+.botoes {
+    margin: auto;
+    margin-bottom: 40px;
+    display: block; /* Default de botão é inline-block. Com block, margin auto funciona*/
+}
+
+.btn {
+    color: white;
+    text-transform: uppercase;
+    width: 180px;
+    margin: 0 1%;
+    border: 5px solid #ecf0f1;
+    height: 38px;
+    padding: 0 20px;
+    cursor: pointer;
+    background-color: rgb(255, 164, 131);
+}
+
+.btn-now {
+    border: 3px solid #232323;
+    background-color: orangered;
+}
+
+/* EXTRA */
+
+.extra {
+    margin: 10px;
+}
+
+.extra img {
+  height: 50px;
+   visibility: hidden;
+}
+
+.extra .msg_erro {
+    background-color: sandybrown; 
+    color: black; 
+    visibility: hidden;
+}
+
+.caminhao {
+    border: 1px solid red;
+    border-radius: 10px;
+    display: block;
+    width: 35%;
+    margin: 10px 7%;
+    height: 160px;
+    float: left;
+    text-align: center;
+
+    background-color: white;
+    box-shadow:  3px 3px 5px 2px #ccc;
+    
+}
+
+.caminhao .valores {
+    margin:auto;
+    overflow: auto;
+}
+
+.caminhao .valores .valor {
+    margin-left: 13%;
+    width: 30%;
+    float: left;
+}
+
+.caminhao .alertas {
+    width:100%;
+    margin:auto;
+    margin-top: 5px;
+    overflow: auto;
+}
+
+.caminhao .alertas .alerta {
+    margin-left: 13%;
+    width: 30%;
+    float: left;
+}
+.caminhao .alertas .alerta_umidd {
+    margin-right: 13%;
+    width: 30%;
+    float: right;
+}
+
+/* extra */
+
+.show-on-hover {
+    color:#232323
+}
+
+.show-on-hover:hover {
+    color:white
+}
